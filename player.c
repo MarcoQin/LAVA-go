@@ -266,9 +266,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len){
         else {
             memset(stream, is->silence_buf[0], len1);
             if (!is->muted) {
-                fprintf(stderr, "%d\n", is->audio_volume);
                 SDL_MixAudio(stream, (uint8_t *)is->audio_buf + is->audio_buf_index, len1, is->audio_volume);
-                printf ("I don't think you like this: %s\n", SDL_GetError ());
             }
         }
         len -= len1;
@@ -650,6 +648,11 @@ void cp_seek_audio_by_sec(int sec) {
     if (duration < pos || pos < 0) {
         return;
     }
+    stream_seek(global_cplayer_ctx, (int64_t)(pos * AV_TIME_BASE), incr);
+}
+
+void cp_seek_audio_by_absolute_pos(int pos) {
+    int incr = 1;
     stream_seek(global_cplayer_ctx, (int64_t)(pos * AV_TIME_BASE), incr);
 }
 
