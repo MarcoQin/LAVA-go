@@ -20,12 +20,13 @@ type LAVA struct {
 	Filename string
 }
 
-func (_ *LAVA) LoadFile(filename string) {
+func (this *LAVA) LoadFile(filename string) {
 	filename = strings.Trim(filename, "\n")
 	filename = strings.Trim(filename, "\t")
 	filename = strings.Trim(filename, "\r")
 	filename = strings.Trim(filename, " ")
 	fmt.Println("Receive file: " + filename)
+	this.Filename = filename
 	C.cp_load_file(C.CString(filename))
 }
 
