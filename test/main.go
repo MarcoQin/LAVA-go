@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/marcoqin/LAVA-go"
 	"os"
-	"reflect"
 	"strconv"
 	"strings"
 )
@@ -57,6 +56,14 @@ func stop(_ string) {
 	core.Stop()
 }
 
+func seek(cmd string) {
+	r := strings.SplitN(cmd, " ", 2)
+	if len(r) > 1 {
+		sec, _ := strconv.Atoi(r[1])
+		core.SeekBySecond(sec)
+	}
+}
+
 func stat(_ string) {
 	var s string
 	s = fmt.Sprintf("Now  Playing: %s\nTotal Length: %d\nCurrent  Pos: %.2f", core.Filename, core.TimeLength(), core.CurrentTimePosition())
@@ -71,6 +78,7 @@ func main() {
 	cmds["pause"] = pause
 	cmds["stop"] = stop
 	cmds["stat"] = stat
+	cmds["seek"] = seek
 
 	reader := bufio.NewReader(os.Stdin)
 	var cmd string
